@@ -42,9 +42,9 @@ A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you c
 
 ## Download
 
-You can download the latest version of NekobakoOpeningMod [here](https://github.com/Unbistrackted/NekobakoOpeningMod/releases/latest).
-
 ❗️Do **NOT** install if the game's UPDATE VERSION is different from ``0.0.3.0/v196608``, this will most likely crash your game!!!
+
+You can download the latest version of NekobakoOpeningMod [here](https://github.com/Unbistrackted/NekobakoOpeningMod/releases/latest).
 
 After downloading, drop the contents of the .zip file into the root of your SD card.
 

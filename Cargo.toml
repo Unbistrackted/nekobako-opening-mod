@@ -3,6 +3,9 @@ name = "nekobako_opening_mod"
 version = "0.7.0"
 authors = [ "Unbistrackted", "DCNick3" ]
 edition = "2021"
+repository = "https://github.com/Unbistrackted/NekobakoOpeningMod"
+readme = "README.md"
+keywords = ["skyline", "mod", "switch", "rust"]
 
 [package.metadata.skyline]
 titleid = "01006A300BA2C000" # UMINEKO

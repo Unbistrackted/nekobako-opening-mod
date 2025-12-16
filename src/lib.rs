@@ -39,7 +39,7 @@ enum Opening{
     SenkyouNoIgreja,
     OcculticsNoMajo,
     KiriNoPithos,
-    MitaYume,
+    InnanaNoMitaYume,
     SakuPc, // I don't remember the name :O
     Ogon,
     OgonX,
@@ -71,7 +71,7 @@ unsafe fn get_movie_data_hook(
 
     _movie_index = match CONFIG.opening_type {
         OpeningType::Default => 0,
-        OpeningType::UminekoProject => { if chapter_progress < 15 { Opening::SenkyouNoIgreja as i32 } else { Opening::MitaYume as i32 } },
+        OpeningType::UminekoProject => { if chapter_progress < 15 { Opening::SenkyouNoIgreja as i32 } else { Opening::InnanaNoMitaYume as i32 } },
         OpeningType::Linear => todo!(),
         OpeningType::SakuLinear => todo!()
     };

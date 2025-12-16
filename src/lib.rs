@@ -102,7 +102,7 @@ unsafe fn persist_get(gbl_save_data: *const i64, index: u32) -> u16 {
 }
 
 #[allow(dead_code)]
-fn same_build_info() -> bool {
+fn check_build_info() -> bool {
     todo!()
 }
 

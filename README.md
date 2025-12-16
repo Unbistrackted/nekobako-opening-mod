@@ -1,6 +1,6 @@
 # NekobakoOpeningMod ![Version](https://img.shields.io/github/v/release/Unbistrackted/NekobakoOpeningMod?style=plastic&label=Version&color=dc3e3e) ![Downloads](https://img.shields.io/github/downloads/Unbistrackted/NekobakoOpeningMod/total?style=plastic&label=Downloads&color=50f63f) 
 
-A plugin that allows you change the opening in ``Umineko no Naku Koro ni Saku ~Nekobako to Musou no Koukyoukyoku~``
+A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you change the opening in ``Umineko no Naku Koro ni Saku ~Nekobako to Musou no Koukyoukyoku~``
 
 ``Title ID:01006A300BA2C000``
 
@@ -47,6 +47,10 @@ You can download the latest version of NekobakoOpeningMod [here](https://github.
 ❗️Do **NOT** install if the game's UPDATE VERSION is different from ``0.0.3.0/v196608``, this will most likely crash your game!!!
 
 After downloading, drop the contents of the .zip file into the root of your SD card.
+
+You can find the config file at ``/atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod/config.yaml) ``
+
+(**Generates after loading the plugin**)
 
 ## Building from source
 

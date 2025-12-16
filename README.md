@@ -5,7 +5,7 @@ A plugin that allows you change the opening in ``Umineko no Naku Koro ni Saku ~N
 ``Title ID:01006A300BA2C000``
 
 
-## Configuration Settings:
+## Configuration Settings
 
  Setting Key                   | Value Type | Default Value | Description                                                                                    
 -------------------------------|------------|---------------|------------------------------------------------------------------------------------------------
@@ -27,12 +27,12 @@ A plugin that allows you change the opening in ``Umineko no Naku Koro ni Saku ~N
 
  Config                        | Value                                                                                        
 -------------------------------|---------------------------------------------------------------------------------------------------------------------------
- Kasaneawase No Nekobako       | 0                    
- Umineko No Naku Koro Ni       | 1                   
- Senkyou No Igreja             | 2           
- Occultics No Majo             | 3  
- Kiri No Pithos                | 4
- Mita Yume                     | 5
+ KasaneawaseNoNekobako         | 0                    
+ UminekoNoNakuKoroNi           | 1                   
+ SenkyouNoIgreja               | 2           
+ OcculticsNoMajo               | 3  
+ KiriNoPithos                  | 4
+ InnanaNoMitaYume              | 5
  SakuPc                        | 6
  Ogon                          | 7
  OgonX                         | 8
@@ -48,4 +48,22 @@ You can download the latest version of NekobakoOpeningMod [here](https://github.
 
 After downloading, drop the contents of the .zip file into the root of your SD card.
 
+## Building from source
+
+To build from source you would need to have [Rust](https://www.rust-lang.org/) and [cargo-skyline](https://github.com/jam1garner/cargo-skyline) installed.
+
+Then you can build the plugin with:
+
+```bash
+cargo skyline build
+```
+
+Or generate the plugin package with:
+
+```bash
+cargo skyline package
+```
+
 ## Special thanks to:
+
+https://github.com/DCNick3 for the tools he created, the time explaining how the basics works, and all sorts of things that would not have made this possible without his help ( I can't really express how grateful I am, never thought I could pull this off)

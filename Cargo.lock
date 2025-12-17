@@ -64,6 +64,7 @@ checksum = "f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273"
 name = "nekobako_opening_mod"
 version = "0.2.0"
 dependencies = [
+ "lazy_static",
  "once_cell",
  "serde",
  "serde_repr",

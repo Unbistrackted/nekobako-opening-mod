@@ -15,7 +15,6 @@ const BUILD_INFO: [u8; 20] = [
 
 // Tried using lazy_static marco, but crashes while loading the config. If someone knows why I really want to know
 static CONFIG: Lazy<Config> = Lazy::new(get_config);
-static HAS_SAME_BUILD: Lazy<bool> = Lazy::new(|| unsafe { is_same_build_info() });
 
 #[derive(Serialize, Deserialize)]
 struct Config {
@@ -51,7 +50,7 @@ enum OpeningMovie {
 
 #[skyline::main(name = "NekobakoOpeningMod")]
 pub fn main() {
-    if !*HAS_SAME_BUILD {
+    if unsafe { !has_same_build_info() } {
         return;
     }
 
@@ -69,6 +68,7 @@ fn get_config() -> Config {
 
     let mut storage_holder = StorageHolder::new(sd_storage);
 
+    //Creates the config if it doesn't exist
     if !storage_holder.get_flag("config.yaml") {
         let default_config = Config {
             is_enabled: true,
@@ -122,8 +122,8 @@ unsafe fn persist_get(gbl_save_data: *const i64, index: u32) -> u16 {
     }
 }
 
-//From ReSwitched's Discord Server, last 0x1000 bytes in .rodata contains build info just after "GNU\x00" and, .rodata is located before .data (Thanks DCNick3 and Masa!)
-unsafe fn is_same_build_info() -> bool {
+//From ReSwitched's Discord Server, last 0x1000 bytes in .rodata contains build info just after "GNU\x00", and .rodata is located before .data so I'm using thta as an offset (Thanks DCNick3 and Masa!)
+unsafe fn has_same_build_info() -> bool {
     let data_adress = getRegionAddress(Region::Data) as usize;
     let scan = core::slice::from_raw_parts((data_adress - 0x1000) as *const u8, 0x1000);
 

@@ -1,17 +1,28 @@
-use skyline::libc::c_long;
 use skyline::install_hook;
-use skyline::hooks::getRegionAddress;
-use std::ffi::c_int;
+use once_cell::sync::Lazy;
+use skyline::libc::{c_long, c_int};
+use skyline::hooks::{Region, getRegionAddress};
 use skyline_config::{SdCardStorage, StorageHolder};
 use serde::{Serialize, Deserialize};
 use serde_repr::{Serialize_repr, Deserialize_repr};
-use once_cell::sync::Lazy;
 
 const GBL_SAVE_DATA_OFFSET: usize = 0x229220;
 const GET_MOVIE_DATA_OFFSET: usize = 0x114e20;
+const BUILD_INFO: [u8; 20] = [
+    0x76, 0x16, 0xf8, 0x96, 0x3d,
+    0xac, 0xcd, 0x70, 0xe2, 0x0f,
+    0xf3, 0x90, 0x4e, 0x13, 0x36,
+    0x7f, 0x96, 0xf2, 0xd9, 0xb3,
+];
 
 static CONFIG: Lazy<Config> = Lazy::new(|| {
     get_config()
+});
+
+static IS_DIFFERENT_BUILD: Lazy<bool> = Lazy::new(|| {
+    unsafe  {
+        !is_same_build_info()
+    }
 });
 
 #[derive(Serialize, Deserialize)]
@@ -19,12 +30,12 @@ struct Config {
     is_enabled: bool,
     opening_type: OpeningType,
     is_specific_opening: bool,
-    specific_opening: Opening
+    specific_opening: OpeningMovie
 }
 
 #[repr(i32)]
 #[derive(Serialize_repr, Deserialize_repr, Clone, Copy)]
-enum OpeningType{
+enum OpeningType {
     Default,
     UminekoProject,
     Linear,
@@ -33,7 +44,7 @@ enum OpeningType{
 
 #[repr(i32)]
 #[derive(Serialize_repr, Deserialize_repr, Clone, Copy)]
-enum Opening{
+enum OpeningMovie {
     KasaneawaseNoNekobako,
     UminekoNoNakuKoroNi,
     SenkyouNoIgreja,
@@ -48,6 +59,10 @@ enum Opening{
 
 #[skyline::main(name = "NekobakoOpeningMod")]
 pub fn main() {
+    if *IS_DIFFERENT_BUILD{
+        return;
+    }
+
     if !CONFIG.is_enabled {
         return;
     }
@@ -55,12 +70,26 @@ pub fn main() {
     install_hook!(get_movie_data_hook);
 }
 
+fn get_config() -> Config {
+    let sd_storage = SdCardStorage::new("atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod");
+    let mut storage_holder = StorageHolder::new(sd_storage);
+
+    if !storage_holder.get_flag("config.yaml") {
+        let default_config = Config { is_enabled: true, opening_type: OpeningType::Default, is_specific_opening: false, specific_opening: OpeningMovie::KasaneawaseNoNekobako };
+
+        storage_holder.set_field_yaml("config.yaml", &default_config).unwrap();
+    }
+
+    storage_holder.get_field_yaml("config.yaml").unwrap()
+}
+
 #[skyline::hook(offset = GET_MOVIE_DATA_OFFSET)]
 unsafe fn get_movie_data_hook(
     gbl_script: c_long,
     mut _movie_index: c_int,
 ) -> c_long {
-    let base_adress = getRegionAddress(skyline::hooks::Region::Text) as usize;
+    let base_adress = getRegionAddress(Region::Text) as usize;
+
     let save_offset = (base_adress + GBL_SAVE_DATA_OFFSET) as *const i64;
 
     let chapter_progress= persist_get(save_offset, 0) as c_int;
@@ -71,25 +100,12 @@ unsafe fn get_movie_data_hook(
 
     _movie_index = match CONFIG.opening_type {
         OpeningType::Default => 0,
-        OpeningType::UminekoProject => { if chapter_progress < 15 { Opening::SenkyouNoIgreja as i32 } else { Opening::InnanaNoMitaYume as i32 } },
+        OpeningType::UminekoProject => { if chapter_progress < 15 { OpeningMovie::SenkyouNoIgreja as i32 } else { OpeningMovie::InnanaNoMitaYume as i32 } },
         OpeningType::Linear => todo!(),
         OpeningType::SakuLinear => todo!()
     };
 
     call_original!(gbl_script, _movie_index)
-}
-
-fn get_config() -> Config {
-    let sd_storage = SdCardStorage::new("atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod");
-    let mut storage_holder = StorageHolder::new(sd_storage);
-
-    if !storage_holder.get_flag("config.yaml") {
-        let default_config = Config { is_enabled: true, opening_type: OpeningType::Default, is_specific_opening: false, specific_opening: Opening::KasaneawaseNoNekobako };
-
-        storage_holder.set_field_yaml("config.yaml", &default_config).unwrap();
-    }
-
-    storage_holder.get_field_yaml("config.yaml").unwrap()
 }
 
 //From decompiled main.nso, gets a value from persist_data array (i think it's an array) using loaded SAVEDATA
@@ -101,11 +117,21 @@ unsafe fn persist_get(gbl_save_data: *const i64, index: u32) -> u16 {
     }
 }
 
-#[allow(dead_code)]
-fn check_build_info() -> bool {
-    todo!()
-}
+//From ReSwitched's Discord Server, last 0x1000 bytes in .rodata contains build info just after "GNU\x00" and, .rodata is located before .data (Thanks DCNick3 and Masa!)
+unsafe fn is_same_build_info() -> bool {
+     let data_adress   = getRegionAddress(Region::Data) as usize;
 
+     let scan = core::slice::from_raw_parts((data_adress - 0x1000) as *const u8,0x1000);
+
+     let gnu_end_pos = match scan.windows(4).position(|w| w == b"GNU\x00"){
+          Some(pos) => pos + 4,
+          None => return false
+     };
+
+     let build_info = &scan[gnu_end_pos..gnu_end_pos + 20]; // In the decompilation BUILD INFO had 20 bytes
+
+     build_info == BUILD_INFO.as_slice()
+}
 
 
 

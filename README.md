@@ -1,6 +1,6 @@
 # NekobakoOpeningMod ![Version](https://img.shields.io/github/v/release/Unbistrackted/NekobakoOpeningMod?style=plastic&label=Version&color=dc3e3e) ![Downloads](https://img.shields.io/github/downloads/Unbistrackted/NekobakoOpeningMod/total?style=plastic&label=Downloads&color=50f63f) 
 
-A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you change the opening in ``Umineko no Naku Koro ni Saku ~Nekobako to Musou no Koukyoukyoku~``
+A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you to change the opening movie in ``Umineko no Naku Koro ni Saku ~Nekobako to Musou no Koukyoukyoku~``
 
 ``Title ID:01006A300BA2C000``
 

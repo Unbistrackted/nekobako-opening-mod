@@ -1,6 +1,6 @@
 [package]
 name = "nekobako_opening_mod"
-version = "0.1.0"
+version = "0.2.0"
 authors = [ "Unbistrackted", "DCNick3" ]
 edition = "2021"
 repository = "https://github.com/Unbistrackted/NekobakoOpeningMod"

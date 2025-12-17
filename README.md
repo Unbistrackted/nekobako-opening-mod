@@ -23,7 +23,7 @@ A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you t
  Linear                        | 2          | To do! - Don't use this value, will most likely crash your game!!!      
  SakuLinear                    | 3          | To do! - Don't use this value, will most likely crash your game!!!    
  
-### Opening
+### OpeningMovie
 
  Config                        | Value                                                                                        
 -------------------------------|---------------------------------------------------------------------------------------------------------------------------

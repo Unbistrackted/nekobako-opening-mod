@@ -122,7 +122,7 @@ unsafe fn persist_get(gbl_save_data: *const i64, index: u32) -> u16 {
     }
 }
 
-//From ReSwitched's Discord Server, last 0x1000 bytes in .rodata contains build info just after "GNU\x00", and .rodata is located before .data so I'm using thta as an offset (Thanks DCNick3 and Masa!)
+//From ReSwitched's Discord Server, last 0x1000 bytes in .rodata contains build info just after "GNU\x00", and .rodata is located before .data so I'm using that as an offset (Thanks DCNick3 and Masa!)
 unsafe fn has_same_build_info() -> bool {
     let data_adress = getRegionAddress(Region::Data) as usize;
     let scan = core::slice::from_raw_parts((data_adress - 0x1000) as *const u8, 0x1000);

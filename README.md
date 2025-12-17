@@ -19,7 +19,7 @@ A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you t
  Config                        | Value      | Description                                                                                    
 -------------------------------|------------|---------------------------------------------------------------------------------------------------------------
  Default                       | 0          | Plays the default intro (Kasaneawase No Nekobako)            
- UminekoProject                | 1          | Plays ``Senkyou No Igreja`` if you completed epsiodes 1-4, then ``Mita Yume`` for episodes 5-8            
+ UminekoProject                | 1          | Plays ``Senkyou No Igreja`` if you completed epsiodes 1-4, then ``Innana No Mita Yume`` for episodes 5-8            
  Linear                        | 2          | To do! - Don't use this value, will most likely crash your game!!!      
  SakuLinear                    | 3          | To do! - Don't use this value, will most likely crash your game!!!    
  

@@ -70,4 +70,6 @@ cargo skyline package
 
 ## Special thanks to:
 
-https://github.com/DCNick3 for the tools he created, the time explaining how the basics works, and all sorts of things that would not have made this possible without his help ( I can't really express how grateful I am, never thought I could pull this off)
+https://github.com/DCNick3 for the tools he created, the time explaining how the basics works, and all sorts of things that would not have made this possible without his help.
+
+( I can't really express how grateful I am, never thought I could pull this off)

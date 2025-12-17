@@ -42,7 +42,7 @@ A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you t
 
 ## Download
 
-❗️This plugin only works with **UPDATE VERSION** ``0.0.3.0/v196608``
+❗️This plugin only works with **UPDATE VERSION** ``0.0.3.0/v196608`` (You can check the version by pressing ``+`` on the game, at the top-left)
 
 You can download the latest version of NekobakoOpeningMod [here](https://github.com/Unbistrackted/NekobakoOpeningMod/releases/latest).
 

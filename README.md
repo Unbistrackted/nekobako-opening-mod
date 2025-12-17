@@ -42,7 +42,7 @@ A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you t
 
 ## Download
 
-❗️Do **NOT** install if the game's UPDATE VERSION is different from ``0.0.3.0/v196608``, this will most likely crash your game!!!
+❗️This plugin only works with **UPDATE VERSION** ``0.0.3.0/v196608``
 
 You can download the latest version of NekobakoOpeningMod [here](https://github.com/Unbistrackted/NekobakoOpeningMod/releases/latest).
 
@@ -50,7 +50,6 @@ After downloading, drop the contents of the .zip file into the root of your SD c
 
 You can find the config file at ``/atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod/config.yaml) ``
 
-(**Generates after loading the plugin**)
 
 ## Building from source
 

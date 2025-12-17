@@ -12,7 +12,7 @@ A plugin for [Skyline](https://github.com/skyline-dev/skyline) that allows you t
  is_enabled                    | bool       | true          | Enables or disables the plugin     
  opening_type                  | i32        | 0             | Which opening type should the plugin use? ( See OpeningType ) 
  is_specific_opening           | bool       | false         | Should the plugin force a specific opening?
- specific_opening              | i32        | 0             | ( See Opening )                       
+ specific_opening              | i32        | 0             | ( See OpeningMovie )                       
 
  ### OpeningType 
 
@@ -48,7 +48,7 @@ You can download the latest version of NekobakoOpeningMod [here](https://github.
 
 After downloading, drop the contents of the .zip file into the root of your SD card.
 
-You can find the config file at ``/atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod/config.yaml) ``
+You can find the config file at ``/atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod/config.yaml``
 
 
 ## Building from source

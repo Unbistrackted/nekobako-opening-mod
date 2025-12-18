@@ -61,8 +61,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273"
 
 [[package]]
-name = "nekobako_opening_mod"
-version = "0.2.0"
+name = "nekobako-plugin-utils"
+version = "0.1.0"
 dependencies = [
  "lazy_static",
  "once_cell",
@@ -70,6 +70,20 @@ dependencies = [
  "serde_repr",
  "skyline 0.5.1",
  "skyline-config",
+ "smart-default",
+]
+
+[[package]]
+name = "nekobako_opening_mod"
+version = "0.2.0"
+dependencies = [
+ "nekobako-plugin-utils",
+ "once_cell",
+ "serde",
+ "serde_repr",
+ "skyline 0.5.1",
+ "skyline-config",
+ "smart-default",
 ]
 
 [[package]]
@@ -239,6 +253,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "smart-default"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0eb01866308440fc64d6c44d9e86c5cc17adfe33c4d6eed55da9145044d0ffc1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.111",
 ]
 
 [[package]]

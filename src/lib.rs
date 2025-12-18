@@ -1,26 +1,31 @@
+use nekobako_plugin_utils::get_or_generate_config;
+use nekobako_plugin_utils::is_enabled;
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use skyline::hooks::{getRegionAddress, Region};
 use skyline::install_hook;
 use skyline::libc::{c_int, c_long};
-use skyline_config::{SdCardStorage, StorageHolder};
+use smart_default::SmartDefault;
 
 const GBL_SAVE_DATA_OFFSET: usize = 0x229220;
 const GET_MOVIE_DATA_OFFSET: usize = 0x114e20;
-const BUILD_INFO: [u8; 20] = [
-    0x76, 0x16, 0xf8, 0x96, 0x3d, 0xac, 0xcd, 0x70, 0xe2, 0x0f, 0xf3, 0x90, 0x4e, 0x13, 0x36, 0x7f,
-    0x96, 0xf2, 0xd9, 0xb3,
-];
 
-// Tried using lazy_static marco, but crashes while loading the config. If someone knows why I really want to know
-static CONFIG: Lazy<Config> = Lazy::new(get_config);
+static CONFIG: Lazy<Config> =
+    Lazy::new(|| get_or_generate_config::<Config>(env!("CARGO_PKG_NAME")));
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, SmartDefault)]
 struct Config {
+    #[default = true]
     is_enabled: bool,
+
+    #[default(OpeningType::UminekoProject)]
     opening_type: OpeningType,
+
+    #[default = false]
     is_specific_opening: bool,
+
+    #[default(OpeningMovie::SenkyouNoIgreja)]
     specific_opening: OpeningMovie,
 }
 
@@ -48,42 +53,8 @@ enum OpeningMovie {
     OgonCross,
 }
 
-#[skyline::main(name = "NekobakoOpeningMod")]
-pub fn main() {
-    if unsafe { !has_same_build_info() } {
-        return;
-    }
-
-    if !CONFIG.is_enabled {
-        return;
-    }
-
-    install_hook!(get_movie_data_hook);
-}
-
-fn get_config() -> Config {
-    let sd_storage = SdCardStorage::new(
-        "atmosphere/contents/01006A300BA2C000/romfs/skyline/config/nekobako_opening_mod",
-    );
-
-    let mut storage_holder = StorageHolder::new(sd_storage);
-
-    //Creates the config if it doesn't exist
-    if !storage_holder.get_flag("config.yaml") {
-        let default_config = Config {
-            is_enabled: true,
-            opening_type: OpeningType::Default,
-            is_specific_opening: false,
-            specific_opening: OpeningMovie::KasaneawaseNoNekobako,
-        };
-
-        storage_holder
-            .set_field_yaml("config.yaml", &default_config)
-            .unwrap();
-    }
-
-    storage_holder.get_field_yaml("config.yaml").unwrap()
-}
+#[skyline::from_offset(0xd1350)]
+unsafe fn persist_get(gbl_script: *const i64, index: u32) -> u16;
 
 #[skyline::hook(offset = GET_MOVIE_DATA_OFFSET)]
 unsafe fn get_movie_data_hook(gbl_script: c_long, mut _movie_index: c_int) -> c_long {
@@ -113,26 +84,9 @@ unsafe fn get_movie_data_hook(gbl_script: c_long, mut _movie_index: c_int) -> c_
     call_original!(gbl_script, _movie_index)
 }
 
-//From decompiled main.nso, gets a value from persist_data array (i think it's an array) using loaded SAVEDATA
-unsafe fn persist_get(gbl_save_data: *const i64, index: u32) -> u16 {
-    if (index as usize) < ((*gbl_save_data.offset(1) - *gbl_save_data) >> 1) as usize {
-        *((*gbl_save_data + index as i64 * 2) as *const u16)
-    } else {
-        0
+#[skyline::main(name = "NekobakoOpeningMod")]
+pub fn main() {
+    if is_enabled!(*CONFIG) {
+        install_hook!(get_movie_data_hook);
     }
-}
-
-//From ReSwitched's Discord Server, last 0x1000 bytes in .rodata contains build info just after "GNU\x00", and .rodata is located before .data so I'm using that as an offset (Thanks DCNick3 and Masa!)
-unsafe fn has_same_build_info() -> bool {
-    let data_adress = getRegionAddress(Region::Data) as usize;
-    let scan = core::slice::from_raw_parts((data_adress - 0x1000) as *const u8, 0x1000);
-
-    let gnu_end_pos = match scan.windows(4).position(|w| w == b"GNU\x00") {
-        Some(pos) => pos + 4,
-        None => return false,
-    };
-
-    let build_info = &scan[gnu_end_pos..gnu_end_pos + 20]; // In the decompilation BUILD INFO had 20 bytes
-
-    build_info == BUILD_INFO.as_slice()
 }

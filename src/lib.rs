@@ -9,7 +9,8 @@ use skyline::libc::{c_int, c_long};
 use smart_default::SmartDefault;
 
 const GBL_SAVE_DATA_OFFSET: usize = 0x229220;
-const GET_MOVIE_DATA_OFFSET: usize = 0x114e20;
+const TITLEDEMO_CREATE_GET_MOVIE_DATA_OFFSET: usize = 0x114e20;
+const GET_PERSIST_OFFSET: usize = 0xd1350;
 
 static CONFIG: Lazy<Config> =
     Lazy::new(|| get_or_generate_config::<Config>(env!("CARGO_PKG_NAME")));
@@ -53,10 +54,10 @@ enum OpeningMovie {
     OgonCross,
 }
 
-#[skyline::from_offset(0xd1350)]
+#[skyline::from_offset(GET_PERSIST_OFFSET)]
 unsafe fn persist_get(gbl_script: *const i64, index: u32) -> u16;
 
-#[skyline::hook(offset = GET_MOVIE_DATA_OFFSET)]
+#[skyline::hook(offset = TITLEDEMO_CREATE_GET_MOVIE_DATA_OFFSET)]
 unsafe fn get_movie_data_hook(gbl_script: c_long, mut _movie_index: c_int) -> c_long {
     let base_adress = getRegionAddress(Region::Text) as usize;
 
@@ -84,7 +85,7 @@ unsafe fn get_movie_data_hook(gbl_script: c_long, mut _movie_index: c_int) -> c_
     call_original!(gbl_script, _movie_index)
 }
 
-#[skyline::main(name = "NekobakoOpeningMod")]
+#[skyline::main(name = "nekobako-opening-mod")]
 pub fn main() {
     if is_enabled!(*CONFIG) {
         install_hook!(get_movie_data_hook);

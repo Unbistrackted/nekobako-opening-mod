@@ -61,10 +61,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273"
 
 [[package]]
-name = "nekobako-plugin-utils"
-version = "0.1.0"
+name = "nekobako-opening-mod"
+version = "0.3.0"
 dependencies = [
- "lazy_static",
+ "nekobako-plugin-utils",
  "once_cell",
  "serde",
  "serde_repr",
@@ -74,10 +74,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "nekobako_opening_mod"
-version = "0.2.0"
+name = "nekobako-plugin-utils"
+version = "0.1.0"
+source = "git+https://github.com/Unbistrackted/nekobako-plugin-utils#4b33d3e3e10a1ea1bab9da76172dc2df80935967"
 dependencies = [
- "nekobako-plugin-utils",
+ "lazy_static",
  "once_cell",
  "serde",
  "serde_repr",

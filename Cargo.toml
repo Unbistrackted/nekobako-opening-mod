@@ -1,6 +1,6 @@
 [package]
 name = "nekobako-opening-mod"
-version = "0.3.0"
+version = "0.2.1"
 authors = ["Unbistrackted", "DCNick3"]
 edition = "2021"
 readme = "README.md"
